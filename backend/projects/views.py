@@ -12,4 +12,4 @@ from rest_framework.permissions import IsAdminUser
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]

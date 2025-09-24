@@ -4,13 +4,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from .models import Project
+from django.views.decorators.csrf import csrf_exempt
 
 GITHUB_API_URL = "https://api.github.com/repos"
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+@csrf_exempt
+# @permission_classes([IsAdminUser])
 def fetch_github_repo(request, owner, repo):
 
     url = f"{GITHUB_API_URL}/{owner}/{repo}"
@@ -34,7 +36,7 @@ def fetch_github_repo(request, owner, repo):
     })
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def save_github_repo(request, owner, repo):
     url = f"{GITHUB_API_URL}/{owner}/{repo}"
     headers = {
