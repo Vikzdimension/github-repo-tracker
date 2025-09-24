@@ -13,5 +13,3 @@ services:
         generateValue: true
       - key: ALLOWED_HOSTS
         value: "*"
-      - key: DATABASE_URL
-        value: "postgresql://root:sG0cGFD3r24W84imWPK1JzYXcuz5fUgn@dpg-d3a42mi4d50c73cvrbvg-a.oregon-postgres.render.com/repotracker"
