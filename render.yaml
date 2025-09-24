@@ -3,7 +3,7 @@ services:
     name: github-repo-tracker
     env: python
     buildCommand: "pip install -r requirements.txt && cd backend/frontend/admin-dashboard && npm install && npm run build && cd ../../../backend && python manage.py collectstatic --noinput"
-    startCommand: "cd backend && python manage.py migrate && python manage.py shell -c \"from django.contrib.auth.models import User; User.objects.filter(username='admin').delete(); User.objects.create_superuser('admin', 'admin@demo.com', 'admin123')\" && gunicorn backend.wsgi:application"
+    startCommand: "cd backend && python manage.py migrate && python manage.py create_admin && gunicorn backend.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
