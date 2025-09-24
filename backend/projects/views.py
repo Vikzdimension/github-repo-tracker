@@ -5,6 +5,10 @@ from rest_framework.permissions import IsAdminUser
 from .models import Project
 from .serializers import ProjectSerializer
 
+def home_view(request):
+    """Render the home page"""
+    return render(request, 'home.html')
+
 @staff_member_required
 def dashboard_view(request):
     return render(request, 'admin/dashboard.html')
