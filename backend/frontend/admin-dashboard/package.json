@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cd ../../../ && python update_template.py",
+    "build:prod": "vite build && python ../../../update_template.py && cd ../../ && python manage.py collectstatic --noinput",
     "lint": "eslint .",
     "preview": "vite preview"
   },

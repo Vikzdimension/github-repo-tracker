@@ -1,100 +1,22 @@
-import os
-import requests
-from django.contrib import admin, messages
-from django.urls import path
-from django.shortcuts import redirect, render
+from django.contrib import admin
 from .models import Project
 
-# Register your models here.
-GITHUB_API_URL = "https://api.github.com/repos"
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-
-
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(admin.ModelAdmin):    
     list_display = ('name', 'description', 'language', 'stars', 'created_at')
-    search_fields = ('name',)
-
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path("fetch-github-repo/", self.admin_site.admin_view(self.fetch_github_repo),
-                name="fetch-github-repo"),
-            path(
-                "fetch-save-github/", self.admin_site.admin_view(self.fetch_save_github_repo),
-                name="fetch-save-github"
-            ),
-        ]
-        return custom_urls + urls
+    list_filter = ('language', 'created_at')
+    search_fields = ('name', 'description')
+    readonly_fields = ('created_at',)
+    ordering = ('-stars', '-created_at')
     
-    def fetch_github_repo(self, request):
-        if request.method == "POST":
-            owner = request.POST.get("owner")
-            repo = request.POST.get("repo")
+    change_list_template = 'admin/projects/project/change_list.html'
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['title'] = 'GitHub Repository Dashboard'
+        return super().changelist_view(request, extra_context)
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related()
 
-            if not owner or not repo:
-                messages.error(request, "Please provide both owner and repo.")
-                return redirect("admin:fetch-github-repo")
-            
-            headers = {
-                "Accept": "application/vnd.github+json",
-                "Authorization": f"token {GITHUB_TOKEN}" if GITHUB_TOKEN else ""
-            }
 
-            url = f"{GITHUB_API_URL}/{owner}/{repo}"
-            response = requests.get(url, headers=headers)
-
-            if response.status_code == 200:
-                data = response.json()
-                project, created = Project.objects.update_or_create(
-                    name=f"{owner}/{repo}",
-                    defaults={
-                        'description': data.get('description', ''),
-                        'language': data.get('language', ''),
-                        'stars': data.get('stargazers_count', 0),
-                    },
-                )
-                
-                msg = "Repo saved sucessfully." if created else "Repo updated sucessfully."
-                messages.success(request, msg)
-                return redirect("admin:projects_project_changelist")
-            else:
-                messages.error(request, f"Github API error: {response.status_code}")
-                return redirect("admin:fetch-github-repo")
-            
-        return render(request, "admin/fetch_github_repo.html")
-
-    def fetch_save_github_repo(self, request):
-        if request.method == "POST":
-            owner = request.POST.get("owner")
-            repo = request.POST.get("repo")
-
-            if not owner or not repo:
-                messages.error(request, "Please provide both owner and repo.")
-                return redirect("admin:fetch-save-github")
-
-            headers = {
-                "Accept": "application/vnd.github+json",
-                "Authorization": f"token {GITHUB_TOKEN}" if GITHUB_TOKEN else ""
-            }
-            url = f"{GITHUB_API_URL}/{owner}/{repo}"
-            response = requests.get(url, headers=headers)
-
-            if response.status_code == 200:
-                data = response.json()
-                project, created = Project.objects.update_or_create(
-                    name=f"{owner}/{repo}",
-                    defaults={
-                        'description': data.get('description', ''),
-                        'language': data.get('language', ''),
-                        'stars': data.get('stargazers_count', 0),
-                    },
-                )
-                msg = "Repo saved successfully." if created else "Repo updated successfully."
-                messages.success(request, msg)
-                return redirect("admin:fetch-save-github")
-            else:
-                messages.error(request, f"GitHub API error: {response.status_code}")
-                return redirect("admin:fetch-save-github")
-
-        return render(request, "admin/fetch_save_github.html")

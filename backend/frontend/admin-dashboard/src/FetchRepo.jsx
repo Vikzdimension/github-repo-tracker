@@ -1,77 +1,114 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
+// Helper function to get CSRF from cookies
+const getCsrfToken = () => {
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+    const [name, value] = cookie.trim().split('=');
+    if (name === 'csrftoken') {
+      return decodeURIComponent(value);
     }
-    return cookieValue;
-}
+  }
+  return null;
+};
 
+const FetchRepo = ({ onSuccess }) => {
+  const [formData, setFormData] = useState({
+    owner: '',
+    repo: ''
+  });
+  const [status, setStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-function FetchRepo({ onSuccess }) {
-
-  const [owner, setOwner] = useState("");
-  const [repo, setRepo] = useState("");
-  const [message, setMessage] = useState("");
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("Fetching...");
+    setIsLoading(true);
+    setStatus('Importing repository...');
+
+    const csrfToken = getCsrfToken();
+    const { owner, repo } = formData;
 
     try {
-            const res = await fetch(`http://127.0.0.1:8000/api/github/save/${owner}/${repo}/`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken'),
-                },
-            });
-            const data = await res.json();
+      const response = await fetch(`/api/github/save/${owner}/${repo}/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+      });
 
-            if (!res.ok) {
-                setMessage(data.error || "Error fetching repo");
-            } else {
-                setMessage(data.message || "Repo saved successfully");
-                if (onSuccess) onSuccess();
-            }
-    } catch (err) {
-      setMessage("Network error");
+      const result = await response.json();
+
+      if (response.ok) {
+        setStatus(result.message || 'Repository imported successfully!');
+        setFormData({ owner: '', repo: '' });
+        if (onSuccess) {
+          onSuccess();
+        }
+      } else {
+        setStatus(result.error || 'Failed to import repository');
+      }
+    } catch (error) {
+      setStatus('Network error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>Fetch & Save GitHub Repo</h2>
+    <div className="github-form">
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Owner"
-          value={owner}
-          onChange={(e) => setOwner(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Repo"
-          value={repo}
-          onChange={(e) => setRepo(e.target.value)}
-          required
-        />
-        <button type="submit">Fetch & Save</button>
+        <div className="form-row">
+          <label htmlFor="owner">Repository Owner</label>
+          <input
+            id="owner"
+            name="owner"
+            type="text"
+            placeholder="e.g., facebook"
+            value={formData.owner}
+            onChange={handleInputChange}
+            disabled={isLoading}
+            required
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="repo">Repository Name</label>
+          <input
+            id="repo"
+            name="repo"
+            type="text"
+            placeholder="e.g., react"
+            value={formData.repo}
+            onChange={handleInputChange}
+            disabled={isLoading}
+            required
+          />
+        </div>
+        <button 
+          type="submit" 
+          className="btn-primary"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Importing...' : 'Import Repository'}
+        </button>
       </form>
-      {message && <p>{message}</p>}
+      
+      {status && (
+        <div className={`message ${status.includes('success') ? 'success' : 'error'}`}>
+          {status}
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default FetchRepo
+export default FetchRepo;
