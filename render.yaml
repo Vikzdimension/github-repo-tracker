@@ -1,4 +1,11 @@
 services:
+  - type: pserv
+    name: github-repo-tracker-db
+    env: postgresql
+    plan: free
+    databaseName: github_repo_tracker
+    databaseUser: postgres
+    
   - type: web
     name: github-repo-tracker
     env: python
@@ -13,10 +20,8 @@ services:
         generateValue: true
       - key: ALLOWED_HOSTS
         value: "*"
-    
-  - type: pserv
-    name: github-repo-tracker-db
-    env: postgresql
-    plan: free
-    databaseName: github_repo_tracker
-    databaseUser: postgres
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: github-repo-tracker-db
+          property: connectionString
