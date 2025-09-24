@@ -1,16 +1,9 @@
 services:
-  - type: pserv
-    name: github-repo-tracker-db
-    env: postgresql
-    plan: free
-    databaseName: github_repo_tracker
-    databaseUser: postgres
-    
   - type: web
     name: github-repo-tracker
     env: python
-    buildCommand: "pip install -r requirements.txt && cd backend/frontend/admin-dashboard && npm install && npm run build && cd ../../../backend && python manage.py collectstatic --noinput"
-    startCommand: "cd backend && python manage.py migrate && gunicorn backend.wsgi:application"
+    buildCommand: "pip install -r requirements.txt && cd backend/frontend/admin-dashboard && npm install && npm run build && cd ../../../backend && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "cd backend && gunicorn backend.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -21,7 +14,4 @@ services:
       - key: ALLOWED_HOSTS
         value: "*"
       - key: DATABASE_URL
-        fromService:
-          type: pserv
-          name: github-repo-tracker-db
-          property: connectionString
+        value: "postgresql://root:sG0cGFD3r24W84imWPK1JzYXcuz5fUgn@dpg-d3a42mi4d50c73cvrbvg-a.oregon-postgres.render.com/repotracker"
