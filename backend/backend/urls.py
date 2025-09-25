@@ -18,6 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from projects.views import home_view
 
+admin.site.site_header = 'Github Repo Tracker'
+admin.site.site_title = 'Github Repo Tracker'
+admin.site.index_title = 'Github Repo Tracker Administration'
+
 urlpatterns = [
     path('', home_view, name='home'),
     path('admin/', admin.site.urls),

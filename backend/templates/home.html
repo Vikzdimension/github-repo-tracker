@@ -3,56 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Repository Tracker</title>
+    <title>GitHub Repository Tracker - Full Stack Demo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6; color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a202c; overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh; animation: gradientShift 8s ease-in-out infinite;
         }
+        
+        @keyframes gradientShift {
+            0%, 100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+            50% { background: linear-gradient(135deg, #f093fb 0%, #667eea 50%, #764ba2 100%); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .header { text-align: center; color: white; margin-bottom: 3rem; }
-        .header h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: 700; }
-        .header p { font-size: 1.2rem; opacity: 0.9; }
+        
+        .header {
+            text-align: center; color: white; margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 4rem; margin-bottom: 1rem; font-weight: 800;
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: float 3s ease-in-out infinite;
+        }
+        
+        .header p {
+            font-size: 1.4rem; opacity: 0.95; font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        
+        .tech-stack {
+            display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        .tech-badge {
+            background: rgba(255,255,255,0.2); padding: 0.5rem 1rem;
+            border-radius: 20px; font-size: 0.9rem; font-weight: 500;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
+        }
+        
         .main-content {
-            background: white; border-radius: 12px; padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 2rem;
+            background: rgba(255,255,255,0.95); border-radius: 20px; padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15); margin-bottom: 2rem;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInUp 1s ease-out 0.9s both;
         }
+        
         .features {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem; margin: 2rem 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem; margin: 3rem 0;
         }
+        
         .feature {
-            padding: 1.5rem; border: 1px solid #e1e5e9;
-            border-radius: 8px; text-align: center;
+            padding: 2rem; border-radius: 16px; text-align: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(226,232,240,0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
         }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-        .feature h3 { color: #2d3748; margin-bottom: 0.5rem; }
-        .cta-section { text-align: center; margin: 3rem 0; }
+        
+        .feature::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+        
+        .feature:hover::before { left: 100%; }
+        
+        .feature:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+        }
+        
+        .feature-icon {
+            font-size: 3rem; margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .feature h3 {
+            color: #2d3748; margin-bottom: 1rem; font-size: 1.3rem; font-weight: 700;
+        }
+        
+        .feature p { color: #4a5568; font-size: 1rem; }
+        
+        .cta-section {
+            text-align: center; margin: 4rem 0;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+        
         .btn {
-            display: inline-block; padding: 12px 24px; margin: 0.5rem;
-            text-decoration: none; border-radius: 6px; font-weight: 600;
-            transition: all 0.3s ease;
+            display: inline-block; padding: 16px 32px; margin: 0.8rem;
+            text-decoration: none; border-radius: 12px; font-weight: 600;
+            font-size: 1.1rem; position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-primary { background: #667eea; color: white; }
-        .btn-primary:hover { background: #5a67d8; transform: translateY(-2px); }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(102,126,234,0.4);
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+        
         .btn-secondary {
-            background: #f7fafc; color: #4a5568; border: 2px solid #e2e8f0;
+            background: rgba(255,255,255,0.9); color: #4a5568;
+            border: 2px solid rgba(226,232,240,0.8); backdrop-filter: blur(10px);
         }
-        .btn-secondary:hover { background: #edf2f7; }
-        .instructions {
-            background: #f8f9fa; padding: 2rem; border-radius: 8px; margin: 2rem 0;
+        
+        .btn-secondary:hover {
+            background: white; transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .instructions h3 { color: #2d3748; margin-bottom: 1rem; }
-        .instructions ol { padding-left: 1.5rem; }
-        .instructions li { margin-bottom: 0.5rem; }
-        .footer { text-align: center; color: white; opacity: 0.8; }
+        
+        .credentials-box {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: white; padding: 2rem; border-radius: 16px; margin: 3rem 0;
+            text-align: center; position: relative; overflow: hidden;
+            animation: fadeInUp 1s ease-out 1.5s both;
+        }
+        
+        .credentials-box::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent, rgba(102,126,234,0.3), transparent);
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        
+        .credentials-content {
+            position: relative; z-index: 1;
+            background: rgba(26,32,44,0.9); padding: 1.5rem; border-radius: 12px;
+        }
+        
+        .credentials-box h3 {
+            margin-bottom: 1rem; font-size: 1.4rem;
+            background: linear-gradient(45deg, #667eea, #f093fb);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .cred-item {
+            display: inline-block; background: rgba(255,255,255,0.1);
+            padding: 0.8rem 1.5rem; margin: 0.5rem; border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .footer {
+            text-align: center; color: white; opacity: 0.9;
+            animation: fadeInUp 1s ease-out 1.8s both;
+        }
+        
+        .footer p {
+            font-size: 1.1rem; font-weight: 300;
+            background: rgba(255,255,255,0.1); padding: 1rem 2rem;
+            border-radius: 25px; display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+        
         @media (max-width: 768px) {
-            .header h1 { font-size: 2rem; }
+            .header h1 { font-size: 2.5rem; }
             .main-content { padding: 2rem; }
             .container { padding: 1rem; }
+            .tech-stack { flex-wrap: wrap; }
+            .btn { padding: 12px 24px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -60,52 +201,55 @@
     <div class="container">
         <div class="header">
             <h1>🚀 GitHub Repository Tracker</h1>
-            <p>Track, analyze, and manage GitHub repositories with powerful insights</p>
+            <p>Full-Stack Django + React + PostgreSQL Application</p>
+            <div class="tech-stack">
+                <span class="tech-badge">Django 5.2</span>
+                <span class="tech-badge">React 18</span>
+                <span class="tech-badge">PostgreSQL</span>
+                <span class="tech-badge">REST API</span>
+                <span class="tech-badge">GitHub Integration</span>
+            </div>
         </div>
         
         <div class="main-content">
             <div class="features">
                 <div class="feature">
                     <div class="feature-icon">📊</div>
-                    <h3>Analytics Dashboard</h3>
-                    <p>Interactive statistics and visualizations for your repositories</p>
+                    <h3>Interactive Analytics</h3>
+                    <p>Real-time dashboard with repository statistics, visualizations, and performance metrics</p>
                 </div>
                 <div class="feature">
                     <div class="feature-icon">🔗</div>
-                    <h3>GitHub Integration</h3>
-                    <p>Import repositories directly from GitHub with real-time data</p>
+                    <h3>GitHub API Integration</h3>
+                    <p>Seamless import of repository data directly from GitHub with live synchronization</p>
                 </div>
                 <div class="feature">
                     <div class="feature-icon">⚡</div>
-                    <h3>REST API</h3>
-                    <p>Complete CRUD operations via RESTful API endpoints</p>
+                    <h3>RESTful API</h3>
+                    <p>Complete CRUD operations with Django REST Framework and secure authentication</p>
                 </div>
             </div>
             
-            <div class="instructions">
-                <h3>🎯 How to Get Started</h3>
-                <ol>
-                    <li><strong>Access Admin Dashboard:</strong> Login with admin credentials to manage repositories</li>
-                    <li><strong>Import Repositories:</strong> Use the GitHub import feature to add repositories</li>
-                    <li><strong>View Analytics:</strong> Explore interactive charts and statistics</li>
-                    <li><strong>Use API:</strong> Integrate with external applications via REST API</li>
-                </ol>
+            <div class="credentials-box">
+                <div class="credentials-content">
+                    <h3>🔐 Demo Access Credentials</h3>
+                    <div>
+                        <span class="cred-item">Username: admin</span>
+                        <span class="cred-item">Password: admin123</span>
+                    </div>
+                </div>
             </div>
             
             <div class="cta-section">
-                <a href="/admin/projects/project/" class="btn btn-primary">📈 Open Dashboard</a>
-                <a href="/api/projects/" class="btn btn-secondary">🔌 View API</a>
+                <a href="/admin/projects/project/" class="btn btn-primary">📈 Launch Dashboard</a>
+                <a href="/api/projects/" class="btn btn-secondary">🔌 Explore API</a>
                 <a href="/admin/" class="btn btn-secondary">⚙️ Admin Panel</a>
-            </div>
-            
-            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
-                <p><strong>Demo Credentials:</strong></p>
-                <p>Username: <code>admin</code> | Password: <code>SecurePass123!</code></p>
             </div>
         </div>
         
         <div class="footer">
-            <p>Built with Django + React + PostgreSQL | Deployed on Render</p>
+            <p>💼 Professional Full-Stack Development Portfolio Project</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">© 2025 Vivek Lode - All Rights Reserved</p>
         </div>
     </div>
 </body>

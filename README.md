@@ -3,7 +3,11 @@
 A full-stack web application built with **Django + React + PostgreSQL** that tracks GitHub repositories, provides complete CRUD functionality, integrates with the GitHub API, and visualizes data through an interactive dashboard.
 
 ## 🚀 Live Demo
-[Live Application](https://github-repo-tracker-demo.onrender.com) | [API Documentation](https://github-repo-tracker-demo.onrender.com/api/)
+[Live Application](https://github-repo-tracker.onrender.com) | [Admin Dashboard](https://github-repo-tracker.onrender.com/admin/projects/project/) | [API Documentation](https://github-repo-tracker.onrender.com/api/)
+
+**Demo Credentials:**
+- Username: `admin`
+- Password: `admin123`
 
 ## 📋 Demo Task Requirements
 
@@ -135,6 +139,7 @@ python manage.py runserver
 Visit:
 - **Admin Dashboard**: http://localhost:8000/admin/projects/project/
 - **API**: http://localhost:8000/api/projects/
+- **Home Page**: http://localhost:8000/
 
 ---
 
@@ -175,13 +180,13 @@ ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
 ### 3. API Usage
 ```bash
 # List repositories
-curl -X GET http://localhost:8000/api/projects/
+curl -X GET https://github-repo-tracker.onrender.com/api/projects/
 
 # Import repository (requires admin authentication)
-curl -X POST http://localhost:8000/api/github/save/facebook/react/
+curl -X POST https://github-repo-tracker.onrender.com/api/github/save/facebook/react/
 
 # Delete repository
-curl -X DELETE http://localhost:8000/api/projects/1/delete/
+curl -X DELETE https://github-repo-tracker.onrender.com/api/projects/1/delete/
 ```
 
 ---
@@ -283,7 +288,7 @@ gunicorn backend.wsgi:application
 
 ## 🔹 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ---
 
