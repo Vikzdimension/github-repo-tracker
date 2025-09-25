@@ -1,0 +1,28 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'assets/index.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <style>
+        .breadcrumbs {
+            /* margin-top: 0px !important; */
+            padding-top: 5px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2 style="margin: 0; color: #666;">📊 Repository Analytics Dashboard</h2>
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                🚀 Built by Vivek Lode
+            </div>
+        </div>
+        <div id="root"></div>
+        <script type="module" src="{% static 'assets/index.js' %}"></script>
+    </div>
+    {{ block.super }}
+{% endblock %}
