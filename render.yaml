@@ -2,7 +2,7 @@ services:
   - type: web
     name: github-repo-tracker
     env: python
-    buildCommand: "pip install -r requirements.txt && cd backend/frontend/admin-dashboard && npm install && npm run build && cd ../../../ && python update_template.py && cd backend && python manage.py collectstatic --noinput"
+    buildCommand: "pip install -r requirements.txt && cd backend/frontend/admin-dashboard && rm -rf dist && npm install && npm run build && cd ../../../ && python update_template.py && cd backend && python manage.py collectstatic --noinput"
     startCommand: "cd backend && python manage.py migrate && gunicorn backend.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
