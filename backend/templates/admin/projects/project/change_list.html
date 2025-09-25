@@ -3,7 +3,7 @@
 
 {% block extrahead %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'assets/index-fRKDBj9k.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/index.css' %}">
     <meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 
@@ -11,7 +11,7 @@
     <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
         <h2 style="margin-top: 0; color: #666;">📊 Repository Analytics Dashboard</h2>
         <div id="root"></div>
-        <script type="module" src="{% static 'assets/index-TcIYhNh8.js' %}"></script>
+        <script type="module" src="{% static 'assets/index.js' %}"></script>
     </div>
     {{ block.super }}
 {% endblock %}
