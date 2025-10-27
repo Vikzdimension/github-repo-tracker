@@ -3,25 +3,42 @@
 
 {% block extrahead %}
     {{ block.super }}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'assets/index.css' %}">
-    <meta name="csrf-token" content="{{ csrf_token }}">
     <style>
-        .breadcrumbs {
-            /* margin-top: 0px !important; */
-            padding-top: 5px !important;
+        #container { min-width: 280px !important; }
+        #content { padding: 10px !important; }
+        
+        /* Isolate React from Django Admin CSS */
+        .react-isolated,
+        .react-isolated * {
+            background: revert !important;
+            color: revert !important;
+            border-color: revert !important;
+        }
+        
+        @media (max-width: 400px) {
+          #content { padding: 5px !important; }
+        }
+        #root { width: 100%; max-width: 100%; overflow: hidden; }
+        
+        @media (prefers-color-scheme: light) {
+            html, body, #container, #content, #content-main, .main, .content,
+            #changelist, .results, #changelist-filter, .paginator {
+                background: #fff !important;
+                color: #333 !important;
+            }
         }
     </style>
 {% endblock %}
 
 {% block content %}
-    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 style="margin: 0; color: #666;">📊 Repository Analytics Dashboard</h2>
-            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 600;">
-                🚀 Built by Vivek Lode
-            </div>
+    <div style="background: var(--body-bg, #fff); border: 1px solid var(--border-color, #ddd); border-radius: 4px; margin-bottom: 20px; overflow: hidden; color: var(--body-fg, #333);">
+        <div style="padding: 15px; border-bottom: 1px solid var(--hairline-color, #ddd); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; background: var(--darkened-bg, #f8f9fa);">
+            <h2 style="margin: 0; color: var(--body-medium-color, #666); font-size: 16px;">📊 Repository Analytics Dashboard</h2>
+            <small style="color: var(--body-quiet-color, #666);">🚀 Built by Vivek Lode</small>
         </div>
-        <div id="root"></div>
+        <div id="root" class="react-isolated"></div>
         <script type="module" src="{% static 'assets/index.js' %}"></script>
     </div>
     {{ block.super }}

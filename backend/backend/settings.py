@@ -26,8 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-+##lr#g*m^zm=be#iu8oqsb1jaxtj22$)s0+y35$6i9j_^#oe#")
-# SECRET_KEY = 'django-insecure-+##lr#g*m^zm=be#iu8oqsb1jaxtj22$)s0+y35$6i9j_^#oe#'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("DJANGO_SECRET_KEY environment variable is required")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ['true', '1', 'yes']
@@ -78,8 +79,6 @@ TEMPLATES = [
     },
 ]
 
-# URL's & WSGI
-ROOT_URLCONF = 'backend.urls'
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -89,18 +88,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv(
-            'DATABASE_URL',
-            'postgres://postgres:root@123@127.0.0.1:5432/github_repo_tracker'
-        )
+        default=os.getenv('DATABASE_URL')
     )
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+
+if not DATABASES['default']:
+    raise ValueError("DATABASE_URL environment variable is required")
 
 
 # Password validation
@@ -158,6 +151,14 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Security Settings
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+
 # CORS settings
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = not DEBUG
@@ -166,6 +167,7 @@ SECURE_SSL_REDIRECT = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_AGE = 3600  # 1 hour
 
 # Only allow CORS in development
 if DEBUG:
@@ -196,3 +198,41 @@ if DEBUG:
 STATICFILES_DIRS = [
     BASE_DIR / 'frontend' / 'admin-dashboard' / 'dist',
 ]
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose' if not DEBUG else 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': os.getenv('LOG_LEVEL', 'INFO'),
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'projects': {
+            'handlers': ['console'],
+            'level': os.getenv('LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}

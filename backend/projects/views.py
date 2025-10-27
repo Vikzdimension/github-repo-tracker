@@ -14,12 +14,11 @@ def dashboard_view(request):
     return render(request, 'admin/dashboard.html')
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = Project.objects.all().order_by('-created_at')
     serializer_class = ProjectSerializer
     permission_classes = [IsAdminUser]
     
     def get_queryset(self):
-        queryset = Project.objects.all().order_by('-created_at')
+        queryset = Project.objects.select_related().all()
         language = self.request.query_params.get('language')
         
         if language:
