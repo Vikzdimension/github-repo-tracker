@@ -18,14 +18,17 @@ def main():
     backend_dir = project_root / "backend"
     frontend_dir = project_root / "backend" / "frontend" / "admin-dashboard"
     
-    print("🔨 Building React app...")
-    run_command("npm run build:prod", cwd=frontend_dir)
+    print("Building React app...")
+    run_command("npm run build", cwd=frontend_dir)
     
-    print("🗄️ Running migrations...")
+    print("Running migrations...")
     run_command("python manage.py migrate", cwd=backend_dir)
     
-    print("✅ Build complete!")
-    print("🚀 Start server with: python manage.py runserver")
+    print("Collecting static files...")
+    run_command("python manage.py collectstatic --noinput", cwd=backend_dir)
+    
+    print("Build complete!")
+    print("Start server with: python manage.py runserver")
 
 if __name__ == "__main__":
     main()

@@ -6,12 +6,52 @@
     <title>GitHub Repository Tracker - Full Stack Demo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: auto; }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6; color: #1a202c; overflow-x: hidden;
+            line-height: 1.6; color: #1a202c;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh; animation: gradientShift 8s ease-in-out infinite;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #e2e8f0;
+                background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
+            }
+            
+            .main-content {
+                background: rgba(26, 32, 44, 0.95) !important;
+                color: #e2e8f0;
+            }
+            
+            .feature {
+                background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%) !important;
+                color: #e2e8f0;
+            }
+            
+            .feature h3 {
+                color: #90cdf4 !important;
+            }
+            
+            .feature p {
+                color: #cbd5e0 !important;
+            }
+            
+            .btn-secondary {
+                background: rgba(45, 55, 72, 0.9) !important;
+                color: #e2e8f0 !important;
+                border-color: #4a5568 !important;
+            }
+            
+            .credentials-box {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+            }
+            
+            .credentials-content {
+                background: rgba(15, 23, 42, 0.9) !important;
+            }
         }
         
         @keyframes gradientShift {
@@ -34,7 +74,7 @@
             50% { transform: translateY(-10px); }
         }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; width: 100%; }
+        .container { margin: 0; padding: 1rem; width: 100%; min-width: 100%; box-sizing: border-box; }
         
         .header {
             text-align: center; color: white; margin-bottom: 4rem;
@@ -69,19 +109,27 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.15); margin-bottom: 2rem;
             backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
             animation: fadeInUp 1s ease-out 0.9s both;
+            width: 100%; min-width: 100%; box-sizing: border-box;
         }
         
         .features {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem; margin: 3rem 0;
+            display: grid; grid-template-columns: 1fr;
+            gap: 1rem; margin: 2rem 0;
+        }
+        
+        @media (min-width: 600px) {
+            .features {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
         }
         
         .feature {
-            padding: 2rem; border-radius: 16px; text-align: center;
+            padding: 1.5rem; border-radius: 12px; text-align: center;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             border: 1px solid rgba(226,232,240,0.8);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative; overflow: hidden;
+            width: 100%; box-sizing: border-box;
         }
         
         .feature::before {
@@ -174,6 +222,7 @@
             padding: 0.8rem 1.5rem; margin: 0.5rem; border-radius: 8px;
             font-family: 'Monaco', 'Menlo', monospace; font-weight: 600;
             border: 1px solid rgba(255,255,255,0.2);
+            max-width: 100%; word-break: break-all; box-sizing: border-box;
         }
         
         .footer {
@@ -184,8 +233,9 @@
         .footer p {
             font-size: 1.1rem; font-weight: 300;
             background: rgba(255,255,255,0.1); padding: 1rem 2rem;
-            border-radius: 25px; display: inline-block;
+            border-radius: 25px; display: block;
             backdrop-filter: blur(10px);
+            max-width: 100%; word-break: break-word; box-sizing: border-box;
         }
         
         @media (max-width: 1024px) {
@@ -197,36 +247,36 @@
         }
         
         @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .header h1 { font-size: 2.5rem; line-height: 1.2; }
-            .header p { font-size: 1.1rem; }
-            .main-content { padding: 1.5rem; margin-bottom: 1rem; }
+            .header h1 { font-size: 2.5rem; }
+            .main-content { padding: 1.5rem; }
+            .container { padding: 0.5rem; }
             .tech-stack { flex-wrap: wrap; gap: 0.5rem; }
-            .tech-badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            .features { grid-template-columns: 1fr; gap: 1rem; margin: 2rem 0; }
-            .feature { padding: 1.5rem; }
-            .feature-icon { font-size: 2.5rem; }
-            .feature h3 { font-size: 1.2rem; }
-            .btn { padding: 12px 20px; font-size: 0.95rem; margin: 0.5rem; display: block; max-width: 280px; margin-left: auto; margin-right: auto; }
-            .credentials-box { padding: 1.5rem; margin: 2rem 0; }
-            .credentials-content { padding: 1rem; }
-            .cred-item { display: block; margin: 0.5rem 0; padding: 0.6rem 1rem; font-size: 0.9rem; }
-            .cta-section { margin: 2rem 0; }
+            .btn { padding: 12px 20px; font-size: 0.9rem; }
+            .features { grid-template-columns: 1fr; gap: 1rem; margin: 1.5rem 0; }
+            .feature { padding: 1rem; }
         }
         
-        @media (max-width: 480px) {
-            .container { padding: 0.5rem; }
+        @media (max-width: 400px) {
+            .container { padding: 0.25rem; min-width: 100vw; }
+            .main-content { padding: 1rem; min-width: 100%; }
             .header h1 { font-size: 2rem; }
-            .header p { font-size: 1rem; }
-            .main-content { padding: 1rem; border-radius: 12px; }
-            .tech-badge { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
-            .feature { padding: 1rem; }
-            .feature-icon { font-size: 2rem; }
+            .header p { font-size: 1.1rem; }
+            .tech-badge { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
+            .feature { padding: 0.8rem; }
             .feature h3 { font-size: 1.1rem; }
             .feature p { font-size: 0.9rem; }
-            .btn { font-size: 0.9rem; padding: 10px 16px; }
-            .credentials-box h3 { font-size: 1.2rem; }
-            .footer p { font-size: 0.9rem; padding: 0.8rem 1.5rem; }
+            .btn { padding: 10px 16px; font-size: 0.85rem; margin: 0.4rem; }
+        }
+        
+        @media (max-width: 200px) {
+            .container { padding: 0.1rem; min-width: 100vw; width: 100vw; }
+            .main-content { padding: 0.5rem; min-width: 100%; width: 100%; }
+            .header h1 { font-size: 1.5rem; }
+            .header p { font-size: 1rem; }
+            .tech-stack { gap: 0.2rem; }
+            .tech-badge { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+            .feature { padding: 0.5rem; }
+            .btn { padding: 8px 12px; font-size: 0.75rem; margin: 0.2rem; }
         }
     </style>
 </head>
