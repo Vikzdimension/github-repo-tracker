@@ -4,20 +4,52 @@
 {% block extrahead %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'assets/index.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/responsive-utils.css' %}">
     <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .breadcrumbs {
             /* margin-top: 0px !important; */
             padding-top: 5px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 15px !important;
+            }
+            
+            .dashboard-header h2 {
+                font-size: 16px !important;
+                min-width: auto !important;
+            }
+            
+            .dashboard-header div {
+                align-self: center !important;
+                font-size: 11px !important;
+                padding: 6px 12px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard-header h2 {
+                font-size: 14px !important;
+            }
+            
+            .dashboard-header div {
+                font-size: 10px !important;
+                padding: 5px 10px !important;
+            }
         }
     </style>
 {% endblock %}
 
 {% block content %}
     <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 style="margin: 0; color: #666;">📊 Repository Analytics Dashboard</h2>
-            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+        <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+            <h2 style="margin: 0; color: #666; flex: 1; min-width: 200px;">📊 Repository Analytics Dashboard</h2>
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">
                 🚀 Built by Vivek Lode
             </div>
         </div>

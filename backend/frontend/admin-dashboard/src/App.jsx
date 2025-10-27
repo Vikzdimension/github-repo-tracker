@@ -62,16 +62,16 @@ const App = () => {
             <tbody>
               {repositories.slice(0, 10).map((repo) => (
                 <tr key={repo.id}>
-                  <td>
+                  <td data-label="Repository">
                     <strong>{repo.name}</strong>
                     <br />
                     <small>{repo.description}</small>
                   </td>
-                  <td>
+                  <td data-label="Language">
                     <span className="language-tag">{repo.language || 'N/A'}</span>
                   </td>
-                  <td>⭐ {repo.stars}</td>
-                  <td>{new Date(repo.created_at).toLocaleDateString()}</td>
+                  <td data-label="Stars">⭐ {repo.stars}</td>
+                  <td data-label="Added">{new Date(repo.created_at).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
