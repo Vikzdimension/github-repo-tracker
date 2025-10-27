@@ -29,6 +29,36 @@
                 color: #333 !important;
             }
         }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 15px !important;
+            }
+            
+            .dashboard-header h2 {
+                font-size: 16px !important;
+                min-width: auto !important;
+            }
+            
+            .dashboard-header div {
+                align-self: center !important;
+                font-size: 11px !important;
+                padding: 6px 12px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard-header h2 {
+                font-size: 14px !important;
+            }
+            
+            .dashboard-header div {
+                font-size: 10px !important;
+                padding: 5px 10px !important;
+            }
+        }
     </style>
 {% endblock %}
 

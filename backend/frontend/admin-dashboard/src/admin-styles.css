@@ -101,6 +101,12 @@ h1 {
   }
 }
 
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
 .stat-card {
   text-align: center;
   padding: clamp(15px, 4vw, 20px);

@@ -238,6 +238,14 @@
             max-width: 100%; word-break: break-word; box-sizing: border-box;
         }
         
+        @media (max-width: 1024px) {
+            .container { padding: 1.5rem; }
+            .header h1 { font-size: 3.2rem; }
+            .header p { font-size: 1.2rem; }
+            .main-content { padding: 2.5rem; }
+            .features { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        }
+        
         @media (max-width: 768px) {
             .header h1 { font-size: 2.5rem; }
             .main-content { padding: 1.5rem; }

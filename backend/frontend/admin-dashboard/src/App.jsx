@@ -115,7 +115,7 @@ const App = () => {
             <tbody>
               {repositories.slice(0, 10).map((repo) => (
                 <tr key={repo.id}>
-                  <td>
+                  <td data-label="Repository">
                     <strong>{repo.name}</strong>
                     <br />
                     <small>{repo.description?.substring(0, 50)}...</small>
