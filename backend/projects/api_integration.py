@@ -26,8 +26,13 @@ def fetch_github_repo(request, owner, repo):
         
         if response.status_code == 404:
             return Response(
-                {"error": f"Repository '{owner}/{repo}' not found on GitHub"},
+                {"error": f"Repository '{owner}/{repo}' not found. It may be private, deleted, or doesn't exist."},
                 status=404
+            )
+        elif response.status_code == 403:
+            return Response(
+                {"error": f"Access denied to '{owner}/{repo}'. This repository may be private or you've hit the rate limit."},
+                status=403
             )
         elif response.status_code != 200:
             return Response(
@@ -59,8 +64,13 @@ def save_github_repo(request, owner, repo):
         
         if response.status_code == 404:
             return Response(
-                {"error": f"Repository '{owner}/{repo}' not found on GitHub"},
+                {"error": f"Repository '{owner}/{repo}' not found. It may be private, deleted, or doesn't exist."},
                 status=404
+            )
+        elif response.status_code == 403:
+            return Response(
+                {"error": f"Access denied to '{owner}/{repo}'. This repository may be private or you've hit the rate limit."},
+                status=403
             )
         elif response.status_code != 200:
             return Response(
