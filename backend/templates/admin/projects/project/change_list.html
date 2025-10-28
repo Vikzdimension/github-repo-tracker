@@ -6,58 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'assets/index.css' %}">
     <style>
+        /* Override Django's responsive CSS */
+        .react-isolated { all: unset !important; }
+    </style>
+    <style>
         #container { min-width: 280px !important; }
         #content { padding: 10px !important; }
-        
-        /* Isolate React from Django Admin CSS */
-        .react-isolated,
-        .react-isolated * {
-            background: revert !important;
-            color: revert !important;
-            border-color: revert !important;
-        }
-        
-        @media (max-width: 400px) {
-          #content { padding: 5px !important; }
-        }
         #root { width: 100%; max-width: 100%; overflow: hidden; }
-        
-        @media (prefers-color-scheme: light) {
-            html, body, #container, #content, #content-main, .main, .content,
-            #changelist, .results, #changelist-filter, .paginator {
-                background: #fff !important;
-                color: #333 !important;
-            }
+
+        /* Override Django's CSS variables when theme is explicitly set */
+        html[data-theme="dark"] {
+            --body-bg: #121212 !important;
+            --body-fg: #eeeeee !important;
+            --border-color: #353535 !important;
+            --darkened-bg: #212121 !important;
+        }
+
+        html[data-theme="light"] {
+            --body-bg: #ffffff !important;
+            --body-fg: #333333 !important;
+            --border-color: #ddd !important;
+            --darkened-bg: #f8f9fa !important;
+        }
+
+        /* Force React components to dark when Django is dark */
+        html.theme-dark #root,
+        html.theme-dark .card,
+        html.theme-dark .stat,
+        html.theme-dark .dashboard {
+            background: #121212 !important;
+            color: #fff !important;
         }
         
-        @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 15px !important;
-            }
-            
-            .dashboard-header h2 {
-                font-size: 16px !important;
-                min-width: auto !important;
-            }
-            
-            .dashboard-header div {
-                align-self: center !important;
-                font-size: 11px !important;
-                padding: 6px 12px !important;
-            }
+        html.theme-dark .card {
+            background: #1e1e1e !important;
+            border-color: #404040 !important;
         }
         
-        @media (max-width: 480px) {
-            .dashboard-header h2 {
-                font-size: 14px !important;
-            }
-            
-            .dashboard-header div {
-                font-size: 10px !important;
-                padding: 5px 10px !important;
-            }
+        html.theme-dark .stat {
+            background: #2d2d2d !important;
         }
     </style>
 {% endblock %}
@@ -68,8 +55,54 @@
             <h2 style="margin: 0; color: var(--body-medium-color, #666); font-size: 16px;">📊 Repository Analytics Dashboard</h2>
             <small style="color: var(--body-quiet-color, #666);">🚀 Built by Vivek Lode</small>
         </div>
-        <div id="root" class="react-isolated"></div>
-        <script type="module" src="{% static 'assets/index.js' %}"></script>
+        <div id="root" class="react-isolated" style="all: initial; font-family: inherit;"></div>
+        <script>
+            // Force React components to dark mode when Django is dark
+            function applyTheme() {
+                const isDark = document.documentElement.classList.contains('theme-dark');
+                const isLight = document.documentElement.classList.contains('theme-light');
+                const root = document.getElementById('root');
+                const cards = document.querySelectorAll('.card');
+                const stats = document.querySelectorAll('.stat');
+                const dashboard = document.querySelector('.dashboard');
+
+                if (isDark) {
+                    // Force dark theme
+                    if (root) root.style.cssText = 'background: #121212 !important; color: #fff !important;';
+                    cards.forEach(card => card.style.cssText = 'background: #1e1e1e !important; color: #fff !important; border-color: #404040 !important;');
+                    stats.forEach(stat => stat.style.cssText = 'background: #2d2d2d !important; color: #fff !important;');
+                    if (dashboard) dashboard.style.cssText = 'background: transparent !important; color: #fff !important;';
+                } else if (isLight) {
+                    // Force light theme
+                    if (root) root.style.cssText = 'background: #fff !important; color: #333 !important;';
+                    cards.forEach(card => card.style.cssText = 'background: #fff !important; color: #333 !important; border-color: #ddd !important;');
+                    stats.forEach(stat => stat.style.cssText = 'background: #f8f9fa !important; color: #333 !important;');
+                    if (dashboard) dashboard.style.cssText = 'background: transparent !important; color: #333 !important;';
+                }
+            }
+
+            // Override Django's problematic CSS
+            if (document.documentElement.classList.contains('theme-dark')) {
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    html.theme-dark, html.theme-dark body, html.theme-dark #container,
+                    html.theme-dark #content, html.theme-dark #content-main,
+                    html.theme-dark .main, html.theme-dark .content,
+                    html.theme-dark #changelist, html.theme-dark .results,
+                    html.theme-dark #changelist-filter, html.theme-dark .paginator {
+                        background: #121212 !important;
+                        color: #fff !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Apply theme to React components
+            applyTheme();
+            setTimeout(applyTheme, 100);
+            setTimeout(applyTheme, 500);
+        </script>
+        <script type="module" src="{% static 'index.js' %}"></script>
     </div>
     {{ block.super }}
 {% endblock %}

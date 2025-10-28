@@ -1,9 +1,9 @@
 .admin-dashboard {
   font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
-  background: transparent !important;
+  background: var(--body-bg, #fff) !important;
   margin: 0;
   padding: 0 !important;
-  color: #333;
+  color: var(--body-fg, #333) !important;
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -469,48 +469,43 @@ h1 {
   }
 }
 
-/* Dark mode support */
+/* Dark mode support - inherit from Django admin */
 @media (prefers-color-scheme: dark) {
   .admin-dashboard {
-    background: #1a1a1a;
-    color: #e0e0e0;
+    background: var(--body-bg, #1a1a1a) !important;
+    color: var(--body-fg, #e0e0e0) !important;
   }
   
   .module {
-    background: #2d2d2d;
-    border-color: #404040;
+    background: var(--darkened-bg, #2d2d2d) !important;
+    border-color: var(--border-color, #404040) !important;
   }
   
   .stat-card {
-    background: #333;
-    border-color: #404040;
+    background: var(--darkened-bg, #333) !important;
+    border-color: var(--border-color, #404040) !important;
+    color: var(--body-fg, #e0e0e0) !important;
+  }
+  
+  .admin-table {
+    background: var(--darkened-bg, #2d2d2d) !important;
+    color: var(--body-fg, #e0e0e0) !important;
   }
   
   .admin-table th {
-    background: #333;
-    color: #e0e0e0;
+    background: var(--body-bg, #333) !important;
+    color: var(--body-fg, #e0e0e0) !important;
   }
   
   .admin-table td {
-    border-bottom-color: #404040;
+    border-bottom-color: var(--border-color, #404040) !important;
+    color: var(--body-fg, #e0e0e0) !important;
   }
   
   .form-row input {
-    background: #333;
-    border-color: #404040;
-    color: #e0e0e0;
-  }
-  
-  .message.success {
-    background: #1a4a3a;
-    color: #4ade80;
-    border-color: #2d5a3d;
-  }
-  
-  .message.error {
-    background: #4a1a1a;
-    color: #f87171;
-    border-color: #5d2d2d;
+    background: var(--darkened-bg, #333) !important;
+    border-color: var(--border-color, #404040) !important;
+    color: var(--body-fg, #e0e0e0) !important;
   }
 }
 

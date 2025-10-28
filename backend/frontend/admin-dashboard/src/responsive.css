@@ -7,17 +7,18 @@
   margin: 0;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: transparent;
 }
 
 .card {
-  background: #fff !important;
-  border: 1px solid #ccc !important;
+  background: var(--body-bg, #fff) !important;
+  border: 1px solid var(--border-color, #ccc) !important;
   border-radius: 4px;
   margin-bottom: 15px;
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
-  color: #333 !important;
+  color: var(--body-fg, #333) !important;
 }
 
 .card h3 {
@@ -56,12 +57,12 @@
 .form input {
   width: 100%;
   padding: 5px 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
   font-size: 16px;
   box-sizing: border-box;
-  color: #333;
-  background: #fff;
+  color: var(--body-fg, #333);
+  background: var(--body-bg, #fff);
 }
 
 .form button {
@@ -124,9 +125,9 @@
 .stat {
   text-align: center;
   padding: 12px;
-  background: #f8f8f8 !important;
+  background: var(--darkened-bg, #f8f8f8) !important;
   border-radius: 4px;
-  color: #333 !important;
+  color: var(--body-fg, #333) !important;
 }
 
 @media (max-width: 400px) {
@@ -204,9 +205,9 @@
 }
 
 .table th {
-  background: #f8f8f8;
+  background: var(--darkened-bg, #f8f8f8);
   font-weight: 500;
-  color: #666;
+  color: var(--body-quiet-color, #666);
   font-size: 0.6875rem;
   text-transform: uppercase;
 }
@@ -263,90 +264,3 @@
   }
 }
 
-/* DARK MODE - Match Django Admin */
-@media (prefers-color-scheme: dark) {
-  .dashboard {
-    background: transparent;
-    color: #f8f9fa;
-  }
-  
-  .card {
-    background: #121212;
-    border-color: #404040;
-    color: #f8f9fa;
-  }
-  
-  .card h3 {
-    background: var(--secondary);
-    color: #fff;
-  }
-  
-  .stat {
-    background: #1e1e1e;
-    color: #f8f9fa;
-  }
-  
-  .stat .number {
-    color: #79aec8;
-  }
-  
-  .stat .label {
-    color: #b0bec5;
-  }
-  
-  .table {
-    color: #f8f9fa;
-  }
-  
-  .table th {
-    background: #1e1e1e;
-    color: #b0bec5;
-  }
-  
-  .table td {
-    border-bottom-color: #333;
-  }
-  
-  .table td strong {
-    color: #f8f9fa;
-  }
-  
-  .table td small {
-    color: #b0bec5;
-  }
-  
-  .form input {
-    background: #121212;
-    border-color: #404040;
-    color: #f8f9fa;
-  }
-  
-  .form input:focus {
-    border-color: #b0bec5;
-  }
-  
-  .form button {
-    background: #417690;
-  }
-  
-  .form button:hover {
-    background: #205067;
-  }
-  
-  .tag {
-    background: #1a365d;
-    color: #79aec8;
-  }
-  
-  .message.success {
-    background: #0f5132;
-    color: #d1e7dd;
-    border-color: #0f5132;
-  }
-  
-  .message.error {
-    background: #842029;
-    color: #f8d7da;
-    border-color: #842029;
-  }
-}
