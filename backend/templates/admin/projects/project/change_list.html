@@ -4,6 +4,8 @@
 {% block extrahead %}
     {{ block.super }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'assets/index.css' %}">
     <style>
         /* Override Django's responsive CSS */
@@ -102,7 +104,7 @@
             setTimeout(applyTheme, 100);
             setTimeout(applyTheme, 500);
         </script>
-        <script type="module" src="{% static 'index.js' %}"></script>
+        <script type="module" src="{% static 'assets/index.js' %}"></script>
     </div>
     {{ block.super }}
 {% endblock %}

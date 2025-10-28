@@ -194,6 +194,6 @@ if DEBUG:
 # REACT 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'frontend' / 'admin-dashboard' / 'dist' / 'assets',
+    BASE_DIR / 'static',
     BASE_DIR / 'frontend' / 'admin-dashboard' / 'dist',
 ]
